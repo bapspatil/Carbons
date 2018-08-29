@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Carbons</string>
 
+    <!--Strings for MainActivity-->
     <string name="image_item_from_flickr">Photo Item from Flickr</string>
     <string name="voice_search">Voice Search</string>
     <string name="about_me">About Me</string>
@@ -8,7 +9,11 @@
     <string name="grid_size_3">Grid Size: 3</string>
     <string name="grid_size_4">Grid Size: 4</string>
     <string name="placeholder_search_image">Placeholder Search Image</string>
+
+    <!--Strings for FullscreenActivity-->
     <string name="fullscreen_photo_from_flickr">Fullscreen Photo from Flickr</string>
+
+    <!--Strings for AboutMeActivity-->
     <string name="about_the_developer">Meet The Developer</string>
     <string name="app_designed_and_developed_by">App designed and developed by</string>
     <string name="credentials">Google Certified Android Developer • IDF Certified UX Designer</string>

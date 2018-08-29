@@ -21,22 +21,26 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// RecyclerView Adapter for the photo items
 public class PhotosRecyclerViewAdapter extends RecyclerView.Adapter<PhotosRecyclerViewAdapter.PhotoViewHolder> {
 
     private ArrayList<PhotoItem> mPhotosArrayList;
     private Context mContext;
     private ItemClickListener mClickListener;
 
+    // Interface to handle clicks on the photos
     public interface ItemClickListener {
         void onItemClick(int position, ImageView photoImageView);
     }
 
+    // Constructor for the PhotosRecyclerViewAdapter
     public PhotosRecyclerViewAdapter(Context context, ArrayList<PhotoItem> photosArrayList, ItemClickListener itemClickListener) {
         this.mContext = context;
         this.mPhotosArrayList = photosArrayList;
         this.mClickListener = itemClickListener;
     }
 
+    // Creating the PhotoViewHolder item
     @NonNull
     @Override
     public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -44,10 +48,13 @@ public class PhotosRecyclerViewAdapter extends RecyclerView.Adapter<PhotosRecycl
         return new PhotoViewHolder(view);
     }
 
+    // Binding data to the PhotoViewHolder item
     @Override
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
+        // Get the photo from the position of the ViewHolder and mPhotosArrayList
         PhotoItem thePhoto = mPhotosArrayList.get(position);
 
+        // Load photos with Glide into the mPhotoImageView
         GlideApp.with(mContext)
                 .load(thePhoto.getUrlM())
                 .error(R.drawable.placeholder_error)
@@ -58,12 +65,15 @@ public class PhotosRecyclerViewAdapter extends RecyclerView.Adapter<PhotosRecycl
                 .into(holder.mPhotoImageView);
     }
 
+    // Getting the number of items in the adapter
     @Override
     public int getItemCount() {
+        // If list of items is empty, return 0
         if (mPhotosArrayList == null) return 0;
-        else return mPhotosArrayList.size();
+        else return mPhotosArrayList.size(); // Else, return number of items in mPhotosArrayList
     }
 
+    // ViewHolder class for the photo items
     public class PhotoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.photoImageView)
         ImageView mPhotoImageView;
@@ -71,12 +81,14 @@ public class PhotosRecyclerViewAdapter extends RecyclerView.Adapter<PhotosRecycl
         PhotoViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this); // Setting click listener to the ViewHolder
         }
 
         @Override
         public void onClick(View v) {
+            // Check if the listener has been created or not
             if (mClickListener != null)
+                // If listener is not null, pass the clicked positino (getAdapterPosition()) and mPhotoImageView to the onItemClick method
                 mClickListener.onItemClick(getAdapterPosition(), mPhotoImageView);
         }
     }

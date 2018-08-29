@@ -33,18 +33,23 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
         ButterKnife.bind(this);
+
+        // Show hint to tell user to click on the image to go full-screen
         CookieBar.build(FullscreenActivity.this)
                 .setLayoutGravity(Gravity.TOP)
                 .setBackgroundColor(R.color.colorAccent)
                 .setTitle("Click on the image to go full-screen")
                 .show();
 
+        // Get the intent from the calling Activity
         if (getIntent().hasExtra(Constants.EXTRA_PHOTOITEM))
             mPhotoItem = getIntent().getParcelableExtra(Constants.EXTRA_PHOTOITEM);
         else
             showError();
 
+        // If mPhotoItem is not null...
         if (mPhotoItem != null) {
+            // ...load the image into the fullscreenPhotoImageView and...
             GlideApp.with(getApplicationContext())
                     .load(mPhotoItem.getUrlM())
                     .error(R.drawable.placeholder_error)
@@ -53,6 +58,8 @@ public class FullscreenActivity extends AppCompatActivity {
                     .placeholder(R.drawable.placeholder_loading)
                     .centerCrop()
                     .into(fullscreenPhotoImageView);
+
+            // ...set the click listener on the fullscreenPhotoImageView to toggle fullscreen and...
             fullscreenPhotoImageView.setOnClickListener(new View.OnClickListener() {
                 boolean isFullscreen = false;
 
@@ -67,12 +74,18 @@ public class FullscreenActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            // ...set the click listener on the backButton to go back to the MainActivity.
             backButton.setOnClickListener(v -> onBackPressed());
-        } else {
+        }
+        // Else...
+        else {
+            // ...show an error.
             showError();
         }
     }
 
+    // Show an error to inform the user to go back to the MainActivity
     private void showError() {
         CookieBar.build(FullscreenActivity.this)
                 .setLayoutGravity(Gravity.TOP)
@@ -82,6 +95,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 .show();
     }
 
+    // Hide the system UI and backButton
     private void hideSystemUI() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -93,6 +107,7 @@ public class FullscreenActivity extends AppCompatActivity {
         backButton.setVisibility(View.GONE);
     }
 
+    // Show the system UI and backButton
     private void showSystemUI() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE);

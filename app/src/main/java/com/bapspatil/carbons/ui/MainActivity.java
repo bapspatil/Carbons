@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 // Implementation not required
             }
 
+            // Performing the search functionality
             @Override
             public void onSearchAction(String currentQuery) {
                 placeholderImageView.setVisibility(View.GONE);
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     startVoiceRecognition();
                     break;
 
-                // AboutMeActivity, Activity with information regarding the developer
+                // AboutMeActivity, an Activity with information regarding the developer
                 case R.id.action_about_me:
                     Intent intentToAboutMe = new Intent(this, AboutMeActivity.class);
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(this, android.R.anim.fade_in, android.R.anim.fade_out);
