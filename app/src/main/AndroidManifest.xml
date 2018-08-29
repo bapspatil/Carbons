@@ -26,7 +26,8 @@
             android:name=".ui.AboutMeActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AboutMeAppTheme">
 
         </activity>
         <activity

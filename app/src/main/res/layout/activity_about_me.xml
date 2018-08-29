@@ -1,9 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_about"
+    android:fitsSystemWindows="true"
     tools:context=".ui.AboutMeActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="@string/about_the_developer"
+                android:textColor="@color/md_white_1000" />
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/app_designed_and_developed_by"
+            android:textColor="@color/md_white_1000" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/md_white_1000"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="12dp"
+            app:cardUseCompatPadding="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/baps_header_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:contentDescription="@string/baps_header"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baps_header"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/body_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@color/md_white_1000"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/baps_header_iv">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="64dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:gravity="center"
+                        android:text="@string/author"
+                        android:textColor="@color/md_black_1000" />
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:gravity="center"
+                        android:text="@string/credentials"
+                        android:textColor="@color/md_black_1000" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/google_play_iv"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="8dp"
+                            android:contentDescription="@string/play_store_link"
+                            android:src="@drawable/google_play" />
+
+                        <ImageView
+                            android:id="@+id/chrome_iv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="8dp"
+                            android:contentDescription="@string/link_to_my_website"
+                            android:src="@drawable/chrome" />
+
+                        <ImageView
+                            android:id="@+id/github_iv"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="8dp"
+                            android:contentDescription="@string/link_to_my_github"
+                            android:src="@drawable/github" />
+
+                        <ImageView
+                            android:id="@+id/twitter_iv"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_margin="8dp"
+                            android:contentDescription="@string/link_to_my_twitter"
+                            android:src="@drawable/twitter" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/baps_iv"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bapspatil"
+                    app:civ_border_color="@color/md_white_1000"
+                    app:civ_border_width="4dp"
+                    app:layout_constraintBottom_toBottomOf="@id/baps_header_iv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/body_lv" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center"
+            android:text="@string/app_version"
+            android:textColor="@color/md_white_1000" />
+
+        <TextView
+            android:id="@+id/version_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/md_white_1000"
+            tools:text="one.zero\n(version code: 3)" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

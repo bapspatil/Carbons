@@ -9,4 +9,14 @@
     <string name="grid_size_4">Grid Size: 4</string>
     <string name="placeholder_search_image">Placeholder Search Image</string>
     <string name="fullscreen_photo_from_flickr">Fullscreen Photo from Flickr</string>
+    <string name="about_the_developer">Meet The Developer</string>
+    <string name="app_designed_and_developed_by">App designed and developed by</string>
+    <string name="credentials">Google Certified Android Developer • IDF Certified UX Designer</string>
+    <string name="author">Bapusaheb Patil</string>
+    <string name="baps_header">Header image for Bapusaheb Patil</string>
+    <string name="play_store_link">Link to my Play Store page</string>
+    <string name="link_to_my_website">Link to my website</string>
+    <string name="link_to_my_github">Link to my GitHub</string>
+    <string name="link_to_my_twitter">Link to my Twitter</string>
+    <string name="app_version">APP VERSION</string>
 </resources>
