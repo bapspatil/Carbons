@@ -2,14 +2,14 @@ package com.bapspatil.carbons.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,7 +24,6 @@ import com.bapspatil.carbons.model.PhotoItem;
 import com.bapspatil.carbons.network.FlickrAPI;
 import com.bapspatil.carbons.util.Constants;
 import com.bapspatil.carbons.util.NetworkUtils;
-import com.bapspatil.carbons.util.PaginationScrollListener;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.aviran.cookiebar2.CookieBar;
@@ -56,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
     // Pagination
     private static final int FIRST_PAGE = 1;
     private int currentPage = FIRST_PAGE;
-    private int TOTAL_PAGES = 0;
-    private boolean isLastPage = false;
-    private boolean isLoading = false;
     private String mQuery;
 
     @Override
@@ -93,30 +89,25 @@ public class MainActivity extends AppCompatActivity {
         photosRecyclerView.setAdapter(mAdapter);
 
         // Pagination for RecyclerView
-        photosRecyclerView.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage += 1;
-                searchImages(mQuery, currentPage);
-            }
+        final int[] pastVisibleItems = new int[1];
+        final int[] visibleItemCount = new int[1];
+        final int[] totalItemCount = new int[1];
+        photosRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                                   @Override
+                                                   public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                                       super.onScrolled(recyclerView, dx, dy);
+                                                       visibleItemCount[0] = gridLayoutManager.getChildCount();
+                                                       totalItemCount[0] = gridLayoutManager.getItemCount();
+                                                       pastVisibleItems[0] = gridLayoutManager.findFirstVisibleItemPosition();
 
-            @Override
-            public int getTotalPageCount() {
-                if(TOTAL_PAGES == 0) return 1;
-                else return TOTAL_PAGES;
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
+                                                       if ((visibleItemCount[0] + pastVisibleItems[0]) >= totalItemCount[0]) {
+                                                           // Reached bottom of RecyclerView; load more data
+                                                           currentPage += 1;
+                                                           searchImages(mQuery, currentPage);
+                                                       }
+                                                   }
+                                               }
+        );
 
         // Setting SearchView click listeners
         searchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
@@ -179,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         Call<FlickrResponse> flickrResponseCall = flickrAPI.searchForImages(Constants.PARAM_SEARCH_METHOD, BuildConfig.FLICKR_API_KEY, Constants.PARAM_FORMAT, Constants.PARAM_NOJSONCALLBACK, Constants.PARAM_EXTRAS, queryText, page);
 
         // Load the first page results
-        if(page == 1) {
+        if (page == 1) {
             // Show loading
             photosRecyclerView.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
@@ -262,10 +253,10 @@ public class MainActivity extends AppCompatActivity {
     // Handling the results of the voice recognition
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (matches != null) {
-                if(!matches.isEmpty()) {
+                if (!matches.isEmpty()) {
                     String query = matches.get(0);
                     placeholderImageView.setVisibility(View.GONE);
                     mQuery = query;
@@ -293,8 +284,7 @@ public class MainActivity extends AppCompatActivity {
                     .setBackgroundColor(R.color.colorPrimaryDark)
                     .setTitle("Press back again to exit.")
                     .show();
-        }
-        else
+        } else
             super.onBackPressed();
     }
 }
