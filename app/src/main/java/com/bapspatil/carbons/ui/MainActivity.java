@@ -45,10 +45,15 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView photosRecyclerView;
     @BindView(R.id.progressBar)
     AVLoadingIndicatorView progressBar;
+
+    // Using a 3rd party SearchView called FloatingSearchView.
+    // With FloatingSearchView, the search button shows up as the bottom-rightmost button
+    // on your device keyboard itself when you start typing the search query.
+    // I've used this so that I don't have a separate search button on the UI to take up too much space
     @BindView(R.id.search_view)
     FloatingSearchView searchView;
 
-    private final int VOICE_RECOGNITION_REQUEST_CODE = 13;
+    private final int VOICE_RECOGNITION_REQUEST_CODE = 13; // Request code for Voice Recognition
     private PhotosRecyclerViewAdapter mAdapter;
     private ArrayList<PhotoItem> photoItemArrayList = new ArrayList<>();
 

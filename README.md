@@ -10,8 +10,6 @@ An Android image search app with offline search support. Uses Flickr API.
 * [CookieBar2](https://github.com/AviranAbady/CookieBar2)
 * [Gson](https://github.com/google/gson/)
 * [CircleImageView](https://github.com/hdodenhof/CircleImageView/)
-* [Crescento](https://github.com/developer-shivam/Crescento/)
-* [KenBurnsView](https://github.com/flavioarfaria/KenBurnsView)
 * [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView/)
 * [recyclerview-animators](https://github.com/wasabeef/recyclerview-animators/)
 * [ButterKnife](https://github.com/JakeWharton/butterknife/)
