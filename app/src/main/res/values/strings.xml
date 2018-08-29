@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Carbons</string>
+
+    <string name="image_item_from_flickr">Image Item from Flickr</string>
 </resources>

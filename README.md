@@ -15,6 +15,7 @@ An Android image search app with offline search support. Uses Flickr API.
 * [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView/)
 * [recyclerview-animators](https://github.com/wasabeef/recyclerview-animators/)
 * [ButterKnife](https://github.com/JakeWharton/butterknife/)
+* [floatingsearchview](https://github.com/arimorty/floatingsearchview)
 
 ## Developed By
 
