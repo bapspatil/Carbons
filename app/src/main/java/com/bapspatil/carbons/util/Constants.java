@@ -9,4 +9,5 @@ public class Constants {
     public static final int PARAM_NOJSONCALLBACK = 1;
     public static final String PARAM_SEARCH_METHOD = "flickr.photos.search";
     public static final String PARAM_EXTRAS = "url_m";
+    public static final String EXTRA_PHOTOITEM = "extra_photoitem";
 }

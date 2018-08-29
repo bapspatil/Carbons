@@ -1,8 +1,11 @@
 package com.bapspatil.carbons.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class PhotoItem {
+public class PhotoItem implements Parcelable{
 
     @SerializedName("owner")
     private String owner;
@@ -154,4 +157,56 @@ public class PhotoItem {
                         ",isfamily = '" + isfamily + '\'' +
                         "}";
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.owner);
+        dest.writeString(this.server);
+        dest.writeInt(this.ispublic);
+        dest.writeInt(this.isfriend);
+        dest.writeInt(this.farm);
+        dest.writeString(this.id);
+        dest.writeString(this.secret);
+        dest.writeString(this.urlM);
+        dest.writeString(this.title);
+        dest.writeString(this.heightM);
+        dest.writeString(this.widthM);
+        dest.writeInt(this.isfamily);
+    }
+
+    public PhotoItem() {
+    }
+
+    protected PhotoItem(Parcel in) {
+        this.owner = in.readString();
+        this.server = in.readString();
+        this.ispublic = in.readInt();
+        this.isfriend = in.readInt();
+        this.farm = in.readInt();
+        this.id = in.readString();
+        this.secret = in.readString();
+        this.urlM = in.readString();
+        this.title = in.readString();
+        this.heightM = in.readString();
+        this.widthM = in.readString();
+        this.isfamily = in.readInt();
+    }
+
+    public static final Creator<PhotoItem> CREATOR = new Creator<PhotoItem>() {
+        @Override
+        public PhotoItem createFromParcel(Parcel source) {
+            return new PhotoItem(source);
+        }
+
+        @Override
+        public PhotoItem[] newArray(int size) {
+            return new PhotoItem[size];
+        }
+    };
 }

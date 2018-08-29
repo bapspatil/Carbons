@@ -8,4 +8,5 @@
     <string name="grid_size_3">Grid Size: 3</string>
     <string name="grid_size_4">Grid Size: 4</string>
     <string name="placeholder_search_image">Placeholder Search Image</string>
+    <string name="fullscreen_photo_from_flickr">Fullscreen Photo from Flickr</string>
 </resources>

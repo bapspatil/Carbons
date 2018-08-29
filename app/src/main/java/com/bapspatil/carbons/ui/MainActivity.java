@@ -70,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Creating an instance of the PhotosRecyclerViewAdapter and setting it to the RecyclerView
         mAdapter = new PhotosRecyclerViewAdapter(getApplicationContext(), photoItemArrayList, (position, photoImageView) -> {
-            // TODO: Implement photo item click
+            PhotoItem photoItem = photoItemArrayList.get(position);
+            Intent fullscreenIntent = new Intent(getApplicationContext(), FullscreenActivity.class);
+            fullscreenIntent.putExtra(Constants.EXTRA_PHOTOITEM, photoItem);
+            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, photoImageView, "PhotoTransition").toBundle();
+            startActivity(fullscreenIntent, options);
         });
         photosRecyclerView.setAdapter(mAdapter);
 
