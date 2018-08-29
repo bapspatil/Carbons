@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Carbons</string>
 
-    <string name="image_item_from_flickr">Image Item from Flickr</string>
+    <string name="image_item_from_flickr">Photo Item from Flickr</string>
+    <string name="voice_search">Voice Search</string>
+    <string name="about_me">About Me</string>
+    <string name="grid_size_2">Grid Size: 2</string>
+    <string name="grid_size_3">Grid Size: 3</string>
+    <string name="grid_size_4">Grid Size: 4</string>
+    <string name="placeholder_search_image">Placeholder Search Image</string>
 </resources>

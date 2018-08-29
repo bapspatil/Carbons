@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
             <ImageView
-                android:id="@+id/imageImageView"
+                android:id="@+id/photoImageView"
                 android:layout_width="320dp"
                 android:layout_height="180dp"
-                tools:src="@drawable/app_icon"
+                tools:src="@drawable/placeholder_error"
                 android:scaleType="centerCrop"
-                android:transitionName="ImageTransition"
+                android:transitionName="PhotoTransition"
                 android:contentDescription="@string/image_item_from_flickr" />
 </RelativeLayout>

@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_voice"
+        android:icon="@drawable/ic_keyboard_voice_white_24dp"
+        android:orderInCategory="1"
+        android:title="@string/voice_search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_about_me"
+        android:icon="@drawable/ic_info_outline_white_24dp"
+        android:orderInCategory="2"
+        android:title="@string/about_me"
+        app:showAsAction="ifRoom" />
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_grid_2"
+            android:checked="true"
+            android:orderInCategory="3"
+            android:title="@string/grid_size_2"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_grid_3"
+            android:orderInCategory="4"
+            android:title="@string/grid_size_3"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_grid_4"
+            android:orderInCategory="5"
+            android:title="@string/grid_size_4"
+            app:showAsAction="never" />
+    </group>
 
 </menu>

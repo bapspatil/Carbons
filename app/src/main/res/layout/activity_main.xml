@@ -9,6 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/md_grey_200"
         android:fitsSystemWindows="true"
         app:elevation="0dp">
 
@@ -17,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginEnd="48dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="snap">
@@ -25,6 +25,7 @@
             <com.arlib.floatingsearchview.FloatingSearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="?android:attr/actionBarSize"
                 app:floatingSearch_actionMenuOverflowColor="@color/md_white_1000"
                 app:floatingSearch_backgroundColor="@color/colorPrimaryDark"
@@ -32,14 +33,14 @@
                 app:floatingSearch_close_search_on_keyboard_dismiss="true"
                 app:floatingSearch_dimBackground="false"
                 app:floatingSearch_dividerColor="@color/md_white_1000"
-                app:floatingSearch_hintTextColor="@color/md_white_1000"
+                app:floatingSearch_hintTextColor="@color/md_grey_400"
                 app:floatingSearch_leftActionColor="@color/md_white_1000"
                 app:floatingSearch_leftActionMode="showSearch"
                 app:floatingSearch_menu="@menu/menu_main"
                 app:floatingSearch_menuItemIconColor="@color/md_white_1000"
                 app:floatingSearch_searchBarMarginLeft="8dp"
                 app:floatingSearch_searchBarMarginRight="8dp"
-                app:floatingSearch_searchHint="Search Flickr..."
+                app:floatingSearch_searchHint="@string/app_name"
                 app:floatingSearch_showSearchKey="true"
                 app:floatingSearch_viewTextColor="@color/md_white_1000" />
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -49,25 +50,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
+        android:background="@color/md_grey_200"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <ImageView
+            android:id="@+id/placeholderImageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="144dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder_search"
+            android:visibility="visible"
+            android:contentDescription="@string/placeholder_search_image" />
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/moviesRecyclerView"
+            android:id="@+id/photosRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbarThumbVertical="@color/colorPrimary"
             android:scrollbars="vertical"
+            android:visibility="gone"
             tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-            tools:listitem="@layout/item_image"
+            tools:listitem="@layout/item_photo"
             tools:spanCount="2" />
 
-        <ProgressBar
+        <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/progressBar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:visibility="invisible" />
+            android:layout_marginTop="144dp"
+            android:visibility="gone"
+            app:indicatorColor="@color/colorAccent"
+            app:indicatorName="LineScaleIndicator" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

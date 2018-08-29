@@ -12,6 +12,6 @@ import retrofit2.http.Query;
 public interface FlickrAPI {
 
     @GET("rest")
-    Call<FlickrResponse> searchForImages(@Query("method") String METHOD, @Query("api_key") String API_KEY, @Query("format") String FORMAT, @Query("nojsoncallback") int NOJSONCALLBACK, @Query("extras") String EXTRAS, @Query("text") String TEXT, @Query("page") String PAGE);
+    Call<FlickrResponse> searchForImages(@Query("method") String METHOD, @Query("api_key") String API_KEY, @Query("format") String FORMAT, @Query("nojsoncallback") int NOJSONCALLBACK, @Query("extras") String EXTRAS, @Query("text") String TEXT, @Query("page") int PAGE);
 
 }
