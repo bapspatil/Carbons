@@ -24,6 +24,7 @@ import com.bapspatil.carbons.model.PhotoItem;
 import com.bapspatil.carbons.network.FlickrAPI;
 import com.bapspatil.carbons.util.Constants;
 import com.bapspatil.carbons.util.NetworkUtils;
+import com.bapspatil.carbons.util.PaginationScrollListener;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.aviran.cookiebar2.CookieBar;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +52,14 @@ public class MainActivity extends AppCompatActivity {
     private final int VOICE_RECOGNITION_REQUEST_CODE = 13;
     private PhotosRecyclerViewAdapter mAdapter;
     private ArrayList<PhotoItem> photoItemArrayList = new ArrayList<>();
-    private int currentPageNumber = 1;
+
+    // Pagination
+    private static final int FIRST_PAGE = 1;
+    private int currentPage = FIRST_PAGE;
+    private int TOTAL_PAGES = 0;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    private String mQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        // Show greeting
         CookieBar.build(MainActivity.this)
                 .setLayoutGravity(Gravity.BOTTOM)
                 .setBackgroundColor(R.color.colorAccent)
@@ -67,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         // Setting the grid layout for the RecyclerView
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         photosRecyclerView.setLayoutManager(gridLayoutManager);
+
+        // Setting ItemAnimator to the RecyclerView
+        photosRecyclerView.setItemAnimator(new LandingAnimator());
 
         // Creating an instance of the PhotosRecyclerViewAdapter and setting it to the RecyclerView
         mAdapter = new PhotosRecyclerViewAdapter(getApplicationContext(), photoItemArrayList, (position, photoImageView) -> {
@@ -78,6 +92,32 @@ public class MainActivity extends AppCompatActivity {
         });
         photosRecyclerView.setAdapter(mAdapter);
 
+        // Pagination for RecyclerView
+        photosRecyclerView.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
+                searchImages(mQuery, currentPage);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                if(TOTAL_PAGES == 0) return 1;
+                else return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
         // Setting SearchView click listeners
         searchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
@@ -88,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             // Performing the search functionality
             @Override
             public void onSearchAction(String currentQuery) {
+                mQuery = currentQuery;
                 placeholderImageView.setVisibility(View.GONE);
                 photosRecyclerView.smoothScrollToPosition(0);
                 searchImages(currentQuery, 1);
@@ -131,42 +172,87 @@ public class MainActivity extends AppCompatActivity {
 
     // Search for images with the search query and page number of the results
     public void searchImages(String queryText, int page) {
-        photosRecyclerView.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        // Get the Retrofit service
         FlickrAPI flickrAPI = NetworkUtils.getCacheEnabledRetrofit(getApplicationContext()).create(FlickrAPI.class);
+
+        // Create a Retrofit Call and pass in the parameters for the GET request
         Call<FlickrResponse> flickrResponseCall = flickrAPI.searchForImages(Constants.PARAM_SEARCH_METHOD, BuildConfig.FLICKR_API_KEY, Constants.PARAM_FORMAT, Constants.PARAM_NOJSONCALLBACK, Constants.PARAM_EXTRAS, queryText, page);
-        flickrResponseCall.enqueue(new Callback<FlickrResponse>() {
-            @Override
-            public void onResponse(Call<FlickrResponse> call, Response<FlickrResponse> response) {
-                photoItemArrayList.clear(); // TODO: Add logic for pagination here by modifying this line
-                if(response.body() != null) {
-                    photoItemArrayList.addAll(response.body().getPhotos().getPhoto());
-                    if(photoItemArrayList.isEmpty()) {
-                        placeholderImageView.setImageResource(R.drawable.no_images);
-                        placeholderImageView.setVisibility(View.VISIBLE);
-                        photosRecyclerView.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        mAdapter.notifyDataSetChanged();
-                        placeholderImageView.setImageResource(R.drawable.placeholder_search);
-                        placeholderImageView.setVisibility(View.GONE);
-                        photosRecyclerView.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
+
+        // Load the first page results
+        if(page == 1) {
+            // Show loading
+            photosRecyclerView.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+
+            // Enqueue the call and send the request
+            flickrResponseCall.enqueue(new Callback<FlickrResponse>() {
+                // If the response is successful
+                @Override
+                public void onResponse(Call<FlickrResponse> call, Response<FlickrResponse> response) {
+                    photoItemArrayList.clear();
+                    if (response.body() != null) {
+                        // Add all the photos to the photoItemArrayList
+                        photoItemArrayList.addAll(response.body().getPhotos().getPhoto());
+                        if (photoItemArrayList.isEmpty()) {
+                            // If the list of photos is empty, show the empty state
+                            placeholderImageView.setImageResource(R.drawable.no_images);
+                            placeholderImageView.setVisibility(View.VISIBLE);
+                            photosRecyclerView.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            // If the list of photos is not empty, notify the adapter and show them in the RecyclerView
+                            mAdapter.notifyDataSetChanged();
+
+                            // Hide loading
+                            placeholderImageView.setImageResource(R.drawable.placeholder_search);
+                            placeholderImageView.setVisibility(View.GONE);
+                            photosRecyclerView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<FlickrResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error searching for images!", Toast.LENGTH_LONG).show();
-                photosRecyclerView.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+                // If the response has failed
+                @Override
+                public void onFailure(Call<FlickrResponse> call, Throwable t) {
+                    // Show a error toast
+                    Toast.makeText(getApplicationContext(), "Error searching for images!", Toast.LENGTH_LONG).show();
+                    placeholderImageView.setImageResource(R.drawable.placeholder_search);
+                    placeholderImageView.setVisibility(View.VISIBLE);
+                    photosRecyclerView.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        }
+        // Load the next page results
+        else {
+            // Enqueue the call and send the request
+            flickrResponseCall.enqueue(new Callback<FlickrResponse>() {
+                // If the response is successful
+                @Override
+                public void onResponse(Call<FlickrResponse> call, Response<FlickrResponse> response) {
+                    if (response.body() != null) {
+                        // Add all the photos to the photoItemArrayList
+                        photoItemArrayList.addAll(response.body().getPhotos().getPhoto());
+                        if (!photoItemArrayList.isEmpty()) {
+                            mAdapter.addAll(photoItemArrayList);
+                        }
+                    }
+                }
+
+                // If the response has failed
+                @Override
+                public void onFailure(Call<FlickrResponse> call, Throwable t) {
+                    // Show a error toast
+                    Toast.makeText(getApplicationContext(), "Error searching for images!", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     // Start the voice search recognition by Google Voice Search
     private void startVoiceRecognition() {
+        // Intent to start Google Voice Recognition
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice searching...");
@@ -182,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!matches.isEmpty()) {
                     String query = matches.get(0);
                     placeholderImageView.setVisibility(View.GONE);
+                    mQuery = query;
                     photosRecyclerView.smoothScrollToPosition(0);
                     searchImages(query, 1);
                     searchView.setSearchText(query);
