@@ -2,6 +2,14 @@
 
 An Android image search app with offline search support. Uses Flickr API.
 
+## Screenshots
+
+<img src="./design/screen0.png" width="70%">&ensp;<img src="./design/screen1.png" width="70%">
+
+<img src="./design/screen2.png" width="70%">&ensp;<img src="./design/screen3.png" width="70%">
+
+<img src="./design/screen4.png" width="70%">&ensp;<img src="./design/screen5.png" width="70%">
+
 ## Libraries Used
 
 * [Android Support Library](https://developer.android.com/topic/libraries/support-library/)
