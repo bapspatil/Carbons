@@ -101,10 +101,12 @@ public class MainActivity extends AppCompatActivity {
             // Performing the search functionality
             @Override
             public void onSearchAction(String currentQuery) {
-                mQuery = currentQuery;
-                placeholderImageView.setVisibility(View.GONE);
-                photosRecyclerView.smoothScrollToPosition(0);
-                searchImages(currentQuery, 1);
+                if(!currentQuery.equals("") && !currentQuery.isEmpty()) {
+                    mQuery = currentQuery;
+                    placeholderImageView.setVisibility(View.GONE);
+                    photosRecyclerView.smoothScrollToPosition(0);
+                    searchImages(currentQuery, 1);
+                }
             }
         });
 
