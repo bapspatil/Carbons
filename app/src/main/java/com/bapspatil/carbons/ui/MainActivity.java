@@ -89,25 +89,7 @@ public class MainActivity extends AppCompatActivity {
         photosRecyclerView.setAdapter(mAdapter);
 
         // Pagination for RecyclerView
-        final int[] pastVisibleItems = new int[1];
-        final int[] visibleItemCount = new int[1];
-        final int[] totalItemCount = new int[1];
-        photosRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                                   @Override
-                                                   public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                                                       super.onScrolled(recyclerView, dx, dy);
-                                                       visibleItemCount[0] = gridLayoutManager.getChildCount();
-                                                       totalItemCount[0] = gridLayoutManager.getItemCount();
-                                                       pastVisibleItems[0] = gridLayoutManager.findFirstVisibleItemPosition();
-
-                                                       if ((visibleItemCount[0] + pastVisibleItems[0]) >= totalItemCount[0]) {
-                                                           // Reached bottom of RecyclerView; load more data
-                                                           currentPage += 1;
-                                                           searchImages(mQuery, currentPage);
-                                                       }
-                                                   }
-                                               }
-        );
+        paginateRecyclerView(gridLayoutManager);
 
         // Setting SearchView click listeners
         searchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
@@ -146,19 +128,45 @@ public class MainActivity extends AppCompatActivity {
                     item.setChecked(true);
                     GridLayoutManager twoGridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
                     photosRecyclerView.setLayoutManager(twoGridLayoutManager);
+                    paginateRecyclerView(twoGridLayoutManager);
                     break;
                 case R.id.action_grid_3:
                     item.setChecked(true);
                     GridLayoutManager threeGridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
                     photosRecyclerView.setLayoutManager(threeGridLayoutManager);
+                    paginateRecyclerView(threeGridLayoutManager);
                     break;
                 case R.id.action_grid_4:
                     item.setChecked(true);
                     GridLayoutManager fourGridLayoutManager = new GridLayoutManager(getApplicationContext(), 4);
                     photosRecyclerView.setLayoutManager(fourGridLayoutManager);
+                    paginateRecyclerView(fourGridLayoutManager);
                     break;
             }
         });
+    }
+
+    // Pagination for RecyclerView
+    private void paginateRecyclerView(GridLayoutManager gridLayoutManager) {
+        final int[] pastVisibleItems = new int[1];
+        final int[] visibleItemCount = new int[1];
+        final int[] totalItemCount = new int[1];
+        photosRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                                   @Override
+                                                   public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                                       super.onScrolled(recyclerView, dx, dy);
+                                                       visibleItemCount[0] = gridLayoutManager.getChildCount();
+                                                       totalItemCount[0] = gridLayoutManager.getItemCount();
+                                                       pastVisibleItems[0] = gridLayoutManager.findFirstVisibleItemPosition();
+
+                                                       if ((visibleItemCount[0] + pastVisibleItems[0]) >= totalItemCount[0]) {
+                                                           // Reached bottom of RecyclerView; load more data
+                                                           currentPage += 1;
+                                                           searchImages(mQuery, currentPage);
+                                                       }
+                                                   }
+                                               }
+        );
     }
 
     // Search for images with the search query and page number of the results
